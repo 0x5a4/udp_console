@@ -1,11 +1,12 @@
-name: udp
+name: udp_console
 description: Send/Receive UDP via Console
 version: 1.2.0
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   args: ^2.0.0
   ansicolor: ^2.0.1
+  multicast_dns: ^0.3.0
 
