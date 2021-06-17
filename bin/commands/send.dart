@@ -47,7 +47,7 @@ class SendCommand extends Command {
       usageException("address is required");
     }
     //Lookup the address(in case the user did not specify an IP but any kind of domain)
-    InternetAddress address = (await InternetAddress.lookup(argResults!["address"])).first; //Just use the first one
+    InternetAddress address = await resolve(argResults!["address"]); //Just use the first one
     if (verbose) {
       print("Address is ${address.address}${address.host != address.address ? " resolved from ${address.host}" : ""}");
     }

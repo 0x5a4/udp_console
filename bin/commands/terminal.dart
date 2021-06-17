@@ -43,7 +43,7 @@ class TerminalCommand extends Command {
     }
 
     //Lookup the address(in case the user did not specify an IP but any kind of domain)
-    InternetAddress address = (await InternetAddress.lookup(addressString!)).first; //Just use the first one;
+    InternetAddress address = await resolve(addressString!);
     if (verbose) {
       print("Address is ${address.address}${address.host != address.address ? " resolved from ${address.host}" : ""}");
     }

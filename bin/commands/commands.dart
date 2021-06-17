@@ -2,15 +2,30 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:args/command_runner.dart';
+import 'package:multicast_dns/multicast_dns.dart';
 import '../main.dart';
+
 part 'listen.dart';
+
 part 'send.dart';
+
 part 'terminal.dart';
 
 ///Create a Socket on [port] and [InternetAddress.anyIPv4]
 Future<RawDatagramSocket> createSocket(int port) async =>
     await RawDatagramSocket.bind(InternetAddress.anyIPv4, port, reusePort: reusePort, reuseAddress: true);
 
+Future<InternetAddress> resolve(String address) async {
+  //ToDo: implement mdns resolve
+  try {
+    return (await InternetAddress.lookup(address)).first;
+  } catch (e, stackTrace) {
+    print(err("Unable to resolve address: $address"));
+    rethrow;
+  };
+}
+
+///constructs a message info including sender and port. appends a timestamp if necessary
 String constructMsgInfo(String sender, int port) {
   StringBuffer builder = StringBuffer();
   builder.write("[");
@@ -22,10 +37,10 @@ String constructMsgInfo(String sender, int port) {
   return info(builder.toString());
 }
 
-Uint8List parseOutput(String input) {
+Uint8List parseOutput(String s) {
   if (binaryMode.output) {
     BytesBuilder bytes = new BytesBuilder();
-    for (String byte in input.split(" ")) {
+    for (String byte in s.split(" ")) {
       //In case you accidentally hit space twice :)
       if (byte.length > 0) {
         if (byte.length == 2) {
@@ -41,7 +56,7 @@ Uint8List parseOutput(String input) {
     }
     return bytes.toBytes();
   }
-  return Uint8List.fromList(input.codeUnits);
+  return Uint8List.fromList(s.codeUnits);
 }
 
 String formatReceivedMsg(Uint8List output) {
@@ -75,4 +90,3 @@ String formatReceivedMsg(Uint8List output) {
 int sendUDP(RawDatagramSocket socket, InternetAddress address, int port, String input) {
   return socket.send(parseOutput(input), address, port);
 }
-

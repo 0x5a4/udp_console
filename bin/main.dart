@@ -26,15 +26,6 @@ void main(List<String> arguments) async {
       help: "Show additional debug info",
       abbr: "v",
     )
-    /*
-    ..argParser.addFlag(
-      "raw",
-      negatable: false,
-      defaultsTo: raw,
-      abbr: "r",
-      help: "Disable output formatting" //ToDo: document better
-    )
-    */
     ..argParser.addFlag(
       "noColor",
       negatable: false,
