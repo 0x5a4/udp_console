@@ -85,6 +85,7 @@ void main(List<String> arguments) async {
     if (verbose) print("timestamp is $timestampMode");
     //Run
     await cmdRnr.run(arguments);
+    exit(0);
   } catch (e, stackTrace) {
     print(err(e.toString()));
     if (verbose) print(stackTrace);
